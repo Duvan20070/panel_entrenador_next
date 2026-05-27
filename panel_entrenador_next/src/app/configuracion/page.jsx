@@ -25,7 +25,7 @@ const NOTIF_TYPES = [
 ];
 
 export default function Configuracion() {
-    const [section, setSection] = useState('perfil');
+    const [section, setSection] = useState('General');
     const [dirty, setDirty] = useState(false);
     const [toasts, setToasts] = useState([]);
     const [selectedTheme, setSelectedTheme] = useState('dark');
@@ -47,7 +47,7 @@ export default function Configuracion() {
     }
 
     const navItems = [
-        { id: 'perfil', label: 'Perfil' },
+        { id: 'General', label: 'General' },
         { id: 'seguridad', label: 'Seguridad' },
         { id: 'tema', label: 'Tema' },
         { id: 'notificaciones', label: 'Notificaciones' },
@@ -81,46 +81,93 @@ export default function Configuracion() {
                     <section className="settings-content">
 
                         {/* PERFIL */}
-                        {section === 'perfil' && (
+                        {section === 'General' && (
                             <div className="settings-section active">
                                 <header className="section-header">
-                                    <div className="section-title">Perfil personal</div>
-                                    <div className="section-desc">Administra tu información pública y datos de contacto.</div>
+                                    <div className="section-title">General</div>
+                                    <div className="section-desc">Ajusta las preferencias generales de tu cuenta.</div>
                                 </header>
-                                <div className="setting-card">
-                                    <div className="setting-card-title">Foto de perfil</div>
-                                    <div className="avatar-section">
-                                        <div className="avatar-preview">AL<div className="avatar-overlay">📷</div></div>
-                                        <div>
-                                            <div className="avatar-name">{form.nombre} {form.apellido}</div>
-                                            <div className="avatar-role">Entrenador principal · VolleyAI</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="setting-card">
-                                    <div className="setting-card-title">Información básica</div>
-                                    <div className="grid2" style={{ gap: '12px' }}>
-                                        {[['NOMBRE', 'nombre'], ['APELLIDO', 'apellido'], ['EMAIL', 'email'], ['TELÉFONO', 'telefono']].map(([label, key]) => (
-                                            <div key={key}>
-                                                <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '5px' }}>{label}</div>
-                                                <input className="field-input" value={form[key]} onChange={e => { setForm(f => ({ ...f, [key]: e.target.value })); markDirty(); }} style={{ width: '100%' }} />
+
+                                <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                                    {/* Panel principal */}
+                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                        <div className="setting-card">
+                                            <div className="field-row">
+                                                <div className="field-info"><div className="field-name">Unidad de medida</div></div>
+                                                <select className="field-select" onChange={markDirty}>
+                                                    <option>Métrico (kg, cm)</option>
+                                                    <option>Imperial (lb, in)</option>
+                                                </select>
                                             </div>
-                                        ))}
-                                        <div>
-                                            <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '5px' }}>ROL</div>
-                                            <select className="field-select" value={form.rol} onChange={e => { setForm(f => ({ ...f, rol: e.target.value })); markDirty(); }} style={{ width: '100%' }}>
-                                                {['Entrenador principal', 'Asistente técnico', 'Preparador físico', 'Analista de datos'].map(o => <option key={o}>{o}</option>)}
-                                            </select>
+                                            <div className="field-row">
+                                                <div className="field-info"><div className="field-name">Idioma</div></div>
+                                                <select className="field-select" onChange={markDirty}>
+                                                    <option>Español</option>
+                                                    <option>English</option>
+                                                    <option>Português</option>
+                                                </select>
+                                            </div>
+                                            <div className="field-row">
+                                                <div className="field-info"><div className="field-name">Tema</div></div>
+                                                <select className="field-select" onChange={markDirty}>
+                                                    <option>Oscuro</option>
+                                                    <option>AMOLED</option>
+                                                    <option>Navy</option>
+                                                    <option>Midnight</option>
+                                                </select>
+                                            </div>
+                                            <div className="field-row">
+                                                <div className="field-info"><div className="field-name">Calidad de video para análisis</div></div>
+                                                <select className="field-select" onChange={markDirty}>
+                                                    <option>Baja</option>
+                                                    <option>Media</option>
+                                                    <option>Alta</option>
+                                                </select>
+                                            </div>
+                                            <div className="field-row">
+                                                <div className="field-info">
+                                                    <div className="field-name">Guardar videos automáticamente</div>
+                                                    <div className="field-desc">Los videos de análisis se guardan en tu historial</div>
+                                                </div>
+                                                <label className="toggle">
+                                                    <input type="checkbox" defaultChecked onChange={markDirty} />
+                                                    <div className="toggle-slider"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '8px' }}>
                                         </div>
                                     </div>
-                                    <div style={{ marginTop: '12px' }}>
-                                        <div style={{ fontSize: '11px', color: 'var(--muted)', marginBottom: '5px' }}>BIO</div>
-                                        <textarea className="field-input" value={form.bio} onChange={e => { setForm(f => ({ ...f, bio: e.target.value })); markDirty(); }} style={{ width: '100%', resize: 'vertical', minHeight: '64px' }} />
+
+                                    {/* Panel lateral Privacidad rápida */}
+                                    <div style={{ width: '220px', flexShrink: 0 }}>
+                                        <div className="setting-card">
+                                            <div className="setting-card-title">Privacidad rápida</div>
+                                            <div style={{ fontSize: '12px', color: 'var(--muted)', marginBottom: '8px' }}>Quién puede ver mis análisis</div>
+                                            <select className="field-select" style={{ width: '100%', marginBottom: '14px' }} onChange={markDirty}>
+                                                <option>Solo yo</option>
+                                                <option>Mi equipo</option>
+                                                <option>Todos</option>
+                                            </select>
+                                            {[['Permitir comentarios', false], ['Compartir progreso', true]].map(([label, def]) => (
+                                                <div key={label} className="field-row">
+                                                    <div className="field-info"><div className="field-name" style={{ fontSize: '12px' }}>{label}</div></div>
+                                                    <label className="toggle">
+                                                        <input type="checkbox" defaultChecked={def} onChange={markDirty} />
+                                                        <div className="toggle-slider"></div>
+                                                    </label>
+                                                </div>
+                                            ))}
+                                            <button className="btn btn-danger" style={{ width: '100%', marginTop: '16px', justifyContent: 'center' }}
+                                                onClick={() => toast('👋', 'Sesión cerrada', 'var(--danger)')}>
+                                                Cerrar sesión
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         )}
-
                         {/* SEGURIDAD */}
                         {section === 'seguridad' && (
                             <div className="settings-section active">
